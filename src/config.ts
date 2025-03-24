@@ -29,24 +29,32 @@ export async function copyConfigFiles(): Promise<void> {
           )
         }
       } else {
-        if (fs.existsSync(dest)) {
-          const answer = await inquirer.prompt([
-            {
-              type: 'confirm',
-              name: 'overwrite',
-              message: chalk.cyan(`File ${dest} already exists. Overwrite?`),
-              default: false
+        try {
+          if (fs.existsSync(dest)) {
+            const answer = await inquirer.prompt([
+              {
+                type: 'confirm',
+                name: 'overwrite',
+                message: chalk.yellow(
+                  `File ${dest} already exists. Overwrite?`
+                ),
+                default: false
+              }
+            ])
+            if (answer.overwrite) {
+              fs.copyFileSync(src, dest)
+              spinner.info(chalk.gray(`File ${dest} overwritten successfully!`))
+            } else {
+              spinner.warn(chalk.yellow(`File ${dest} skipped.`))
             }
-          ])
-          if (answer.overwrite) {
-            fs.copyFileSync(src, dest)
-            spinner.info(chalk.gray(`File ${dest} overwritten successfully!`))
           } else {
-            spinner.warn(chalk.yellow(`File ${dest} skipped.`))
+            fs.copyFileSync(src, dest)
+            spinner.info(chalk.gray(`File ${dest} copied successfully!`))
           }
-        } else {
-          fs.copyFileSync(src, dest)
-          spinner.info(chalk.gray(`File ${dest} copied successfully!`))
+        } catch (error) {
+          spinner.fail(chalk.red(`Error copying file ${dest}:`))
+          console.error(error)
+          throw error
         }
       }
     }
