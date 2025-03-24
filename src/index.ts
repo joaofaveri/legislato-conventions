@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk'
+import { exec } from 'child_process'
 import { Command } from 'commander'
 import * as fs from 'fs'
 import ora from 'ora'
 import * as path from 'path'
+import { promisify } from 'util'
 import { copyConfigFiles } from './config'
 import { installDependencies } from './dependencies'
 import { modifyPackageJson } from './utils'
 
+const execAsync = promisify(exec)
 const program = new Command()
 
 const packageJsonPath = path.join(__dirname, '../package.json')
@@ -52,6 +55,11 @@ export async function main(): Promise<void> {
       }
       return packageJson
     })
+
+    // Execute husky install
+    spinner.start('Running npm run prepare...')
+    await execAsync('npm run prepare')
+    spinner.succeed(chalk.green('npm run prepare executed successfully!'))
 
     spinner.succeed(chalk.green('Configuration completed successfully!'))
 
