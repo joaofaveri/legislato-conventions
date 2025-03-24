@@ -26,6 +26,9 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.js",
+  "bin": {
+    "legislato-conventions": "./dist/index.js"
+  },
   "scripts": {
     "build": "tsup",
     "lint": "eslint --fix",
