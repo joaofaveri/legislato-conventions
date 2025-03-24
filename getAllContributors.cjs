@@ -15,10 +15,15 @@ async function getContributors() {
       }).trim()
     } catch (tagError) {
       console.error('No tags found:', tagError.message)
-      console.log('No tags found. Creating initial tag...')
-      execSync('git tag 0.0.0')
-      execSync('git push origin 0.0.0')
-      lastTag = '0.0.0'
+      console.log(
+        'No tags found. Searching for commits since the beginning of time...'
+      )
+      const totalCommits = parseInt(
+        execSync('git rev-list --count HEAD', { encoding: 'utf-8' }).trim(),
+        10
+      )
+      console.log('Total commits: ', totalCommits)
+      lastTag = `HEAD~${totalCommits}`
     }
 
     // Usa a tag para obter os e-mails dos commits desde essa versão
