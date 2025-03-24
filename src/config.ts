@@ -9,7 +9,10 @@ export async function copyConfigFiles(): Promise<void> {
   const templatesDir = path.join(__dirname, '../configs')
   const destinationDir = process.cwd()
 
-  const copyRecursiveSync = (src: string, dest: string): void => {
+  const copyRecursiveSync = async (
+    src: string,
+    dest: string
+  ): Promise<void> => {
     const exists = fs.existsSync(src)
     if (exists) {
       const stats = fs.statSync(src)
@@ -18,14 +21,33 @@ export async function copyConfigFiles(): Promise<void> {
         if (!fs.existsSync(dest)) {
           fs.mkdirSync(dest)
         }
-        fs.readdirSync(src).forEach(childItemName => {
-          copyRecursiveSync(
+        const children = fs.readdirSync(src)
+        for (const childItemName of children) {
+          await copyRecursiveSync(
             path.join(src, childItemName),
             path.join(dest, childItemName)
           )
-        })
+        }
       } else {
-        fs.copyFileSync(src, dest)
+        if (fs.existsSync(dest)) {
+          const answer = await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'overwrite',
+              message: chalk.cyan(`File ${dest} already exists. Overwrite?`),
+              default: false
+            }
+          ])
+          if (answer.overwrite) {
+            fs.copyFileSync(src, dest)
+            spinner.info(chalk.gray(`File ${dest} overwritten successfully!`))
+          } else {
+            spinner.warn(chalk.yellow(`File ${dest} skipped.`))
+          }
+        } else {
+          fs.copyFileSync(src, dest)
+          spinner.info(chalk.gray(`File ${dest} copied successfully!`))
+        }
       }
     }
   }
@@ -40,40 +62,13 @@ export async function copyConfigFiles(): Promise<void> {
   }
 
   try {
+    console.log(chalk.gray('Files to copy:'), filesToCopy)
     for (const file of filesToCopy) {
       const sourcePath = path.join(templatesDir, file)
       const targetFileName = renameMap[file] || file
       const destinationPath = path.join(destinationDir, targetFileName)
 
-      if (fs.existsSync(sourcePath)) {
-        if (fs.existsSync(destinationPath)) {
-          const answer = await inquirer.prompt([
-            {
-              type: 'confirm',
-              name: 'overwrite',
-              message: chalk.yellow(
-                `File ${targetFileName} already exists. Overwrite?`
-              ),
-              default: false
-            }
-          ])
-          if (answer.overwrite) {
-            copyRecursiveSync(sourcePath, destinationPath)
-            spinner.info(
-              chalk.gray(`File ${targetFileName} overwritten successfully!`)
-            )
-          } else {
-            spinner.warn(chalk.yellow(`File ${targetFileName} skipped.`))
-          }
-        } else {
-          copyRecursiveSync(sourcePath, destinationPath)
-          spinner.info(
-            chalk.gray(`File ${targetFileName} copied successfully!`)
-          )
-        }
-      } else {
-        spinner.warn(chalk.yellow(`File ${file} not found in template.`))
-      }
+      await copyRecursiveSync(sourcePath, destinationPath)
     }
     spinner.succeed(chalk.green('Configuration files copied successfully!'))
   } catch (error) {
