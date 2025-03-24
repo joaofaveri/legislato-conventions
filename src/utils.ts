@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import * as fs from 'fs'
 import ora from 'ora'
 import * as path from 'path'
@@ -13,7 +14,7 @@ export function modifyPackageJson(
   const packageJsonPath = path.join(process.cwd(), 'package.json')
 
   if (!fs.existsSync(packageJsonPath)) {
-    spinner.fail('package.json file not found.')
+    spinner.fail(chalk.red('package.json file not found.'))
     return
   }
 
@@ -24,9 +25,9 @@ export function modifyPackageJson(
       packageJsonPath,
       JSON.stringify(modifiedPackageJson, null, 2)
     )
-    spinner.succeed('package.json modified successfully!')
+    spinner.succeed(chalk.green('package.json modified successfully!'))
   } catch (error) {
-    spinner.fail('Error modifying package.json:')
+    spinner.fail(chalk.red('Error modifying package.json:'))
     console.error(error)
     throw error
   }

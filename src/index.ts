@@ -26,7 +26,9 @@ export async function main(): Promise<void> {
     const userAgent = process.env.npm_config_user_agent
     if (!userAgent || !userAgent.startsWith('npm')) {
       spinner.fail(
-        'This package only supports npm. Please use npm to install dependencies.'
+        chalk.red(
+          'This package only supports npm. Please use npm to install dependencies.'
+        )
       )
       process.exit(1)
     }
@@ -51,7 +53,7 @@ export async function main(): Promise<void> {
       return packageJson
     })
 
-    spinner.succeed('Configuration completed successfully!')
+    spinner.succeed(chalk.green('Configuration completed successfully!'))
 
     console.log(chalk.bold('\nNext steps:'))
     console.log(chalk.yellow('1. Create a .env file in your project root.'))
@@ -72,8 +74,13 @@ export async function main(): Promise<void> {
         '4. If you want to run lint, test or build before running release, please update the release scripts in your package.json accordingly.'
       )
     )
+    console.log(
+      chalk.green(
+        '\n \u{1F389} Congratulations! Your project is now ready for organized commits and automated releases!'
+      )
+    )
   } catch (error) {
-    spinner.fail('Configuration failed')
+    spinner.fail(chalk.red('Configuration failed'))
     console.error(error)
     process.exit(1)
   }

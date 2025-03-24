@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import { exec } from 'child_process'
 import ora from 'ora'
 import { promisify } from 'util'
@@ -25,9 +26,9 @@ export async function installDependencies(): Promise<void> {
 
   try {
     await execAsync(`npm install --save-dev ${dependenciesString}`)
-    spinner.succeed('Dependencies installed successfully!')
+    spinner.succeed(chalk.green('Dependencies installed successfully!'))
   } catch (error) {
-    spinner.fail('Error installing dependencies:')
+    spinner.fail(chalk.red('Error installing dependencies:'))
     console.error(error)
     throw error
   }
