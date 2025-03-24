@@ -80,8 +80,8 @@ export async function copyConfigFiles(): Promise<void> {
       let targetFileName = renameMap[file] || file
       // Substitua .lintstagedrc.template.json por .lintstagedrc.template.ts
       if (isNextJsProject && file === '.lintstagedrc.template.json') {
-        sourcePath = path.join(templatesDir, '.lintstagedrc.template.ts')
-        targetFileName = '.lintstagedrc.ts'
+        sourcePath = path.join(templatesDir, '.lintstagedrc.template.cjs')
+        targetFileName = '.lintstagedrc.cjs'
       }
       const destinationPath = path.join(destinationDir, targetFileName)
 

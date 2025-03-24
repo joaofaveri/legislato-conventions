@@ -1,14 +1,12 @@
 import path from 'path'
 
-const buildEslintCommand = (filenames: string[]): string =>
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+const buildEslintCommand = filenames =>
   `next lint --fix --file ${filenames
+    // eslint-disable-next-line no-undef
     .map(f => path.relative(process.cwd(), f))
     .join(' --file ')}`
 
-/**
- * @filename: lint-staged.config.js
- * @type {import('lint-staged').Configuration}
- */
 export default {
   '*.{js,jsx,ts,tsx}': [buildEslintCommand]
 }
