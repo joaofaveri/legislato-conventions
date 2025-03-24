@@ -38,15 +38,10 @@ export async function main(): Promise<void> {
       packageJson.scripts = {
         ...(packageJson.scripts ?? {}),
         'prepare': 'husky',
-        'release':
-          'npm run test && npm run build && dotenv release-it -- --verbose',
-        'release:no-test': 'npm run build && dotenv release-it -- --verbose',
-        'release:no-npm':
-          'npm run test && dotenv release-it -- --no-npm.publish',
-        'release:changelog':
-          'npm run test && npm run build && dotenv release-it -- --changelog',
-        'release:version':
-          'npm run test && npm run build && dotenv release-it -- --release-version'
+        'release': 'dotenv release-it -- --verbose',
+        'release:no-npm': 'dotenv release-it -- --no-npm.publish',
+        'release:changelog': 'dotenv release-it -- --changelog',
+        'release:version': 'dotenv release-it -- --release-version'
       }
       packageJson.config = {
         commitizen: {
@@ -70,6 +65,11 @@ export async function main(): Promise<void> {
     console.log(
       chalk.yellow(
         '3. This will allow release-it to automate releases on GitHub.'
+      )
+    )
+    console.log(
+      chalk.yellow(
+        '4. If you want to run lint, test or build before running release, please update the release scripts in your package.json accordingly.'
       )
     )
   } catch (error) {

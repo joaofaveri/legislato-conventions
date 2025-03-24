@@ -39,11 +39,31 @@ After configuration, follow these steps:
 The package will add the following scripts to your `package.json`:
 
 * `"prepare": "husky"`: Installs Husky to configure Git hooks.
-* `"release": "npm run test && npm run build && dotenv release-it -- --verbose"`: Automates the release process with `release-it`.
-* `"release:no-test": "npm run build && dotenv release-it -- --verbose"`: Automates the release process with `release-it` without tests.
-* `"release:no-npm": "npm run test && dotenv release-it -- --no-npm.publish"`: Automates the release process without publishing to NPM.
-* `"release:changelog": "npm run test && npm run build && dotenv release-it -- --changelog"`: Print the changelog without releasing anything.
-* `"release:version": "npm run test && npm run build && dotenv release-it -- --release-version"`: Print the next version without releasing anything.
+* `"release": "npm run build && dotenv release-it -- --verbose"`: Automates the release process with `release-it`.
+* `"release:no-npm": "dotenv release-it -- --no-npm.publish"`: Automates the release process without publishing to NPM.
+* `"release:changelog": "dotenv release-it -- --changelog"`: Print the changelog without releasing anything.
+* `"release:version": "dotenv release-it -- --release-version"`: Print the next version without releasing anything.
+
+## Updating Release Scripts
+
+The `release` scripts in your `package.json` are configured to run `release-it` by default. If you want to run lint, test, or build scripts before running `release-it`, you can update the scripts as needed.
+
+For example, if you have `lint`, `test`, and `build` scripts in your `package.json`, you can update the `release` script as follows:
+
+```json
+"scripts": {
+  "prepare": "husky",
+  "lint": "eslint . --ext .js,.ts",
+  "test": "jest",
+  "build": "tsc",
+  "release": "npm run lint && npm run test && npm run build && dotenv release-it -- --verbose",
+  "release:no-npm": "npm run lint && npm run test && dotenv release-it -- --no-npm.publish",
+  "release:changelog": "npm run lint && npm run test && npm run build && dotenv release-it -- --changelog",
+  "release:version": "npm run lint && npm run test && npm run build && dotenv release-it -- --release-version"
+}
+```
+
+This will run the ```lint```, ```test```, and ```build``` scripts before running release-it. Adjust the scripts according to your project's needs.
 
 ## Configuration Added to `package.json`
 
