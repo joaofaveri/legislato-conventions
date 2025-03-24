@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk'
 import { Command } from 'commander'
 import * as fs from 'fs'
 import ora from 'ora'
@@ -18,28 +19,20 @@ program
   .description('Automatically configures conventional commits and changelogs.')
 
 export async function main(): Promise<void> {
-  const spinner = ora('Installing dependencies...').start()
-  const configSpinner = ora('Copying configuration files...').start()
-  const packageJsonSpinner = ora('Modifying package.json...').start()
+  const spinner = ora('Setting up conventions...').start()
 
   try {
     // Verify if npm is being used
     const userAgent = process.env.npm_config_user_agent
     if (!userAgent || !userAgent.startsWith('npm')) {
-      spinner.fail('Installation failed')
-      configSpinner.fail('Configuration failed')
-      packageJsonSpinner.fail('package.json modification failed')
-      console.error(
+      spinner.fail(
         'This package only supports npm. Please use npm to install dependencies.'
       )
       process.exit(1)
     }
 
     await installDependencies()
-    spinner.succeed('Dependencies installed successfully!')
-
     await copyConfigFiles()
-    configSpinner.succeed('Configuration files copied successfully!')
 
     modifyPackageJson(packageJson => {
       packageJson.scripts = {
@@ -62,22 +55,26 @@ export async function main(): Promise<void> {
       }
       return packageJson
     })
-    packageJsonSpinner.succeed('package.json modified successfully!')
 
-    console.log('Configuration completed successfully!')
-    console.log('\nNext steps:')
-    console.log('1. Create a .env file in your project root.')
-    console.log('2. Add the following line to the .env file:')
-    console.log('   GITHUB_TOKEN=your_github_personal_access_token')
+    spinner.succeed('Configuration completed successfully!')
+
+    console.log(chalk.bold('\nNext steps:'))
+    console.log(chalk.yellow('1. Create a .env file in your project root.'))
+    console.log(chalk.yellow('2. Add the following line to the .env file:'))
+    console.log(chalk.cyan('   GITHUB_TOKEN=your_github_personal_access_token'))
     console.log(
-      '   (Replace your_github_personal_access_token with your actual token)'
+      chalk.gray(
+        '   (Replace your_github_personal_access_token with your actual token)'
+      )
     )
-    console.log('3. This will allow release-it to automate releases on GitHub.')
+    console.log(
+      chalk.yellow(
+        '3. This will allow release-it to automate releases on GitHub.'
+      )
+    )
   } catch (error) {
-    spinner.fail('Installation failed')
-    configSpinner.fail('Configuration failed')
-    packageJsonSpinner.fail('package.json modification failed')
-    console.error('Error during configuration:', error)
+    spinner.fail('Configuration failed')
+    console.error(error)
     process.exit(1)
   }
 }

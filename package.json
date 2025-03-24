@@ -41,6 +41,7 @@
     "release:version": "npm run test && npm run build && dotenv release-it -- --release-version"
   },
   "dependencies": {
+    "chalk": "^5.4.1",
     "commander": "^13.1.0",
     "inquirer": "^9.3.7",
     "ora": "^5.4.1"

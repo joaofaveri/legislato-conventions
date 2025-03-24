@@ -1,7 +1,9 @@
 import * as fs from 'fs'
+import ora from 'ora'
 import * as path from 'path'
 
 export async function copyConfigFiles(): Promise<void> {
+  const spinner = ora('Copying configuration files...').start()
   const templatesDir = path.join(__dirname, '../configs')
   const destinationDir = process.cwd()
 
@@ -45,19 +47,19 @@ export async function copyConfigFiles(): Promise<void> {
     try {
       if (fs.existsSync(sourcePath)) {
         if (fs.existsSync(destinationPath)) {
-          console.warn(`File ${targetFileName} already exists. Skipping.`)
+          spinner.warn(`File ${targetFileName} already exists. Skipping.`)
         } else {
           copyRecursiveSync(sourcePath, destinationPath)
-          console.log(`File ${targetFileName} copied successfully!`)
+          spinner.info(`File ${targetFileName} copied successfully!`)
         }
       } else {
-        console.warn(`File ${file} not found in template.`)
+        spinner.warn(`File ${file} not found in template.`)
       }
     } catch (error) {
-      console.error(`Error copying file ${targetFileName}:`, error)
+      spinner.fail(`Error copying file ${targetFileName}:`)
+      console.error(error)
       throw error
     }
   }
-
-  console.log('Configuration files copied successfully!')
+  spinner.succeed('Configuration files copied successfully!')
 }

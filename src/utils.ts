@@ -1,4 +1,5 @@
 import * as fs from 'fs'
+import ora from 'ora'
 import * as path from 'path'
 
 interface PackageJson {
@@ -8,10 +9,11 @@ interface PackageJson {
 export function modifyPackageJson(
   callback: (packageJson: PackageJson) => void
 ): void {
+  const spinner = ora('Modifying package.json...').start()
   const packageJsonPath = path.join(process.cwd(), 'package.json')
 
   if (!fs.existsSync(packageJsonPath)) {
-    console.error('package.json file not found.')
+    spinner.fail('package.json file not found.')
     return
   }
 
@@ -22,8 +24,10 @@ export function modifyPackageJson(
       packageJsonPath,
       JSON.stringify(modifiedPackageJson, null, 2)
     )
-    console.log('package.json modified successfully!')
+    spinner.succeed('package.json modified successfully!')
   } catch (error) {
-    console.error('Error modifying package.json:', error)
+    spinner.fail('Error modifying package.json:')
+    console.error(error)
+    throw error
   }
 }

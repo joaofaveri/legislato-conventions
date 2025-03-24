@@ -1,9 +1,11 @@
 import { exec } from 'child_process'
+import ora from 'ora'
 import { promisify } from 'util'
 
 const execAsync = promisify(exec)
 
 export async function installDependencies(): Promise<void> {
+  const spinner = ora('Installing dependencies...').start()
   const dependencies = [
     '@commitlint/cli@^19.7.1',
     '@commitlint/config-conventional@^19.7.1',
@@ -23,9 +25,10 @@ export async function installDependencies(): Promise<void> {
 
   try {
     await execAsync(`npm install --save-dev ${dependenciesString}`)
-    console.log('Dependencies installed successfully!')
+    spinner.succeed('Dependencies installed successfully!')
   } catch (error) {
-    console.error('Error installing dependencies:', error)
+    spinner.fail('Error installing dependencies:')
+    console.error(error)
     throw error
   }
 }
