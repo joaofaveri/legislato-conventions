@@ -29,24 +29,32 @@ export async function copyConfigFiles(): Promise<void> {
   }
 
   const filesToCopy = fs.readdirSync(templatesDir)
+  const renameMap: Record<string, string> = {
+    '.commitlintrc.template.json': '.commitlintrc.json',
+    '.lintstagedrc.template.json': '.lintstagedrc.json',
+    '.release-it.template.ts': '.release-it.ts',
+    'changelog.config.template.cjs': 'changelog.config.cjs',
+    'getAllContributors.template.cjs': 'getAllContributors.cjs'
+  }
 
   for (const file of filesToCopy) {
     const sourcePath = path.join(templatesDir, file)
-    const destinationPath = path.join(destinationDir, file)
+    const targetFileName = renameMap[file] || file // Use renameMap or original file name
+    const destinationPath = path.join(destinationDir, targetFileName)
 
     try {
       if (fs.existsSync(sourcePath)) {
         if (fs.existsSync(destinationPath)) {
-          console.warn(`File ${file} already exists. Skipping.`)
+          console.warn(`File ${targetFileName} already exists. Skipping.`)
         } else {
           copyRecursiveSync(sourcePath, destinationPath)
-          console.log(`File ${file} copied successfully!`)
+          console.log(`File ${targetFileName} copied successfully!`)
         }
       } else {
         console.warn(`File ${file} not found in template.`)
       }
     } catch (error) {
-      console.error(`Error copying file ${file}:`, error)
+      console.error(`Error copying file ${targetFileName}:`, error)
       throw error
     }
   }
