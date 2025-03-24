@@ -70,10 +70,19 @@ export async function copyConfigFiles(): Promise<void> {
   }
 
   try {
-    console.log(chalk.gray('Files to copy:'), filesToCopy)
+    // Project is Next.js?
+    const isNextJsProject =
+      fs.existsSync(path.join(destinationDir, 'next.config.js'))
+      || fs.existsSync(path.join(destinationDir, 'next.config.ts'))
+
     for (const file of filesToCopy) {
-      const sourcePath = path.join(templatesDir, file)
-      const targetFileName = renameMap[file] || file
+      let sourcePath = path.join(templatesDir, file)
+      let targetFileName = renameMap[file] || file
+      // Substitua .lintstagedrc.template.json por .lintstagedrc.template.ts
+      if (isNextJsProject && file === '.lintstagedrc.template.json') {
+        sourcePath = path.join(templatesDir, '.lintstagedrc.template.ts')
+        targetFileName = '.lintstagedrc.ts'
+      }
       const destinationPath = path.join(destinationDir, targetFileName)
 
       await copyRecursiveSync(sourcePath, destinationPath)
