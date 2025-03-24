@@ -1,12 +1,13 @@
-import path from 'path'
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable no-undef */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const path = require('path')
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const buildEslintCommand = filenames =>
   `next lint --fix --file ${filenames
-    // eslint-disable-next-line no-undef
     .map(f => path.relative(process.cwd(), f))
     .join(' --file ')}`
 
-export default {
+module.exports = {
   '*.{js,jsx,ts,tsx}': [buildEslintCommand]
 }

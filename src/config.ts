@@ -78,7 +78,7 @@ export async function copyConfigFiles(): Promise<void> {
     for (const file of filesToCopy) {
       let sourcePath = path.join(templatesDir, file)
       let targetFileName = renameMap[file] || file
-      // Substitua .lintstagedrc.template.json por .lintstagedrc.template.ts
+      // Substitua .lintstagedrc.template.json por .lintstagedrc.template.cjs
       if (isNextJsProject && file === '.lintstagedrc.template.json') {
         sourcePath = path.join(templatesDir, '.lintstagedrc.template.cjs')
         targetFileName = '.lintstagedrc.cjs'
