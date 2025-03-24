@@ -18,3 +18,5 @@ jest.config.ts
 .lintstagedrc.json
 tsconfig.json
 tsup.config.ts
+
+!/configs
