@@ -1,19 +1,28 @@
 {
-  "name": "@legislato/template-package",
-  "version": "1.1.0",
-  "description": "Template para a criação de packages",
+  "name": "@legislato/legislato-conventions",
+  "version": "0.0.0",
+  "description": "This package facilitates the configuration of commit conventions and changelog for Next.js and Express projects",
   "license": "MIT",
   "author": "João Paulo de Faveri",
   "homepage": "https://www.legislato.com.br",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joaofaveri/template-package.git"
+    "url": "https://github.com/joaofaveri/legislato-conventions.git"
   },
   "keywords": [
-    "typescript",
-    "package",
-    "template"
-  ],
+  "conventional commits",
+  "changelog",
+  "husky",
+  "commitlint",
+  "commitizen",
+  "release-it",
+  "automation",
+  "git workflow",
+  "developer tools",
+  "npm package",
+  "git-cz",
+  "lint-staged"
+],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.js",
