@@ -35,6 +35,7 @@
     "test": "jest",
     "prepare": "husky",
     "release": "npm run test && npm run build && dotenv release-it -- --verbose",
+    "release:only-version": "npm run test && npm run build && dotenv release-it -- --verbose --only-version",
     "release:no-test": "npm run build && dotenv release-it -- --verbose",
     "release:no-npm": "npm run test && dotenv release-it -- --no-npm.publish",
     "release:changelog": "npm run test && npm run build && dotenv release-it -- --changelog",
