@@ -1,6 +1,6 @@
 {
   "name": "@legislato/legislato-conventions",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "This package facilitates the configuration of commit conventions and changelog for Next.js and Express projects",
   "license": "MIT",
   "author": "João Paulo de Faveri",
