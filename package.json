@@ -40,6 +40,11 @@
     "release:changelog": "npm run test && npm run build && dotenv release-it -- --changelog",
     "release:version": "npm run test && npm run build && dotenv release-it -- --release-version"
   },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "inquirer": "^9.3.7",
+    "ora": "^5.4.1"
+  },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
@@ -59,7 +64,6 @@
     "eslint-plugin-prettier": "^5.2.3",
     "git-cz": "^4.9.0",
     "husky": "^9.1.7",
-    "inquirer": "^9.3.7",
     "jest": "^29.7.0",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.2",
