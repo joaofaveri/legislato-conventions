@@ -1,131 +1,65 @@
-# Production-Ready TypeScript Package Template
+# Legislato Conventions
 
-This repository provides a basic template for creating Node.js packages with TypeScript, Jest, and ESLint.
+This NPM package automates the configuration of Conventional Commits and Changelogs for projects within Legislato, ensuring a consistent and efficient Git workflow across all repositories.
 
-## Features
+## Purpose
 
-* **TypeScript:** The project is configured to use TypeScript, ensuring static typing and improving code quality.
-* **Jest:** Unit tests are configured with Jest to ensure code reliability.
-* **ESLint:** ESLint is configured to maintain code consistency and follow best practices.
-* **Simplified Configuration:** The template offers a simplified initial configuration to facilitate the development of new packages.
-* **Husky:** Configured to run scripts on Git hooks.
-* **lint-staged:** Configured to run linters on staged files.
-* **commitlint:** Configured to enforce conventional commit message formats.
-* **release-it:** Configured to automate package releases.
+The main purpose of this package is to streamline the setup of essential tools for commit and release management, such as Husky, Commitlint, Commitizen, and Release-it. With a single command, you can configure your Legislato projects to adhere to standardized commit conventions and automatically generate changelogs.
 
-## How to Use
+## Installation
 
-1.  **Clone the repository:**
+To install the package, execute the following command:
 
-    ```bash
-    git clone https://github.com/joaofaveri/template-package.git
-    cd template-package
-    ```
+```bash
+npx legislato-conventions
+```
 
-2.  **Install dependencies:**
+## Usage
 
-    ```bash
-    npm install
-    ```
-3.  **Configure environment variables:**
-    * Copy `env-example` to `.env`.
-    * Replace `GITHUB_TOKEN` with your GitHub Personal Access Token.
-    * This token is required to automate GitHub operations, including creating releases and tags.
+After installation, the package will perform the following actions:
 
-4.  **Develop:**
+1.  Install the necessary dependencies (Husky, Commitlint, Commitizen, Release-it, etc.).
+2.  Copy the configuration files to your project.
+3.  Modify the `package.json` file to add the required scripts and configurations.
 
-    * Modify the `src/` files with your package's code.
-    * Create unit tests in `tests/`.
+## Next Steps
 
-5.  **Run tests:**
+After configuration, follow these steps:
 
-    ```bash
-    npm run test
-    ```
+1.  Create a `.env` file in your project root.
+2.  Add the following line to the `.env` file:
 
-6.  **Build the package:**
+    GITHUB_TOKEN=your_github_personal_access_token
 
-    ```bash
-    npm run build
-    ```
+    (Replace `your_github_personal_access_token` with your actual GitHub personal access token).
+3.  This will allow `release-it` to automate releases on GitHub.
 
-7.  **Publish the package (optional):**
+## Scripts Added to `package.json`
 
-    ```bash
-    npm run release
-    ```
+The package will add the following scripts to your `package.json`:
 
-## Configurations
+* `"prepare": "husky"`: Installs Husky to configure Git hooks.
+* `"release": "npm run test && npm run build && dotenv release-it -- --verbose"`: Automates the release process with `release-it`.
+* `"release:no-npm": "npm run test && dotenv release-it -- --no-npm.publish"`: Automates the release process without publishing to NPM.
+* `"release:changelog": "npm run test && npm run build && dotenv release-it -- --changelog"`: Print the changelog without releasing anything.
+* `"release:version": "npm run test && npm run build && dotenv release-it -- --release-version"`: Print the next version without releasing anything.
 
-* **TypeScript:** TypeScript settings can be adjusted in the `tsconfig.json` file.
-* **Jest:** Jest settings can be adjusted in the `jest.config.js` file.
-* **ESLint:** ESLint settings can be adjusted in the `.eslintrc.json` file.
-* **Husky:** Husky settings can be adjusted in the `.husky` directory and `package.json` file.
-* **lint-staged:** lint-staged settings can be adjusted in the `package.json` and `.lintstagedrc.json` files.
-* **commitlint:** commitlint settings can be adjusted in the `commitlint.config.js` file.
-* **release-it:** release-it settings can be adjusted in the `.release-it.ts` and `changelog.config.cjs` files.
+## Configuration Added to `package.json`
 
-### commitlint
+The package will add the following configuration to your `package.json`:
 
-* The `commitlint.config.js` file allows you to customize the commit message format.
-    * It uses the `conventional-changelog-conventionalcommits` preset, which enforces a standardized commit message format.
-    * You can define rules to enforce specific conventions for commit message headers, scopes, and types.
-    * **Available Rules:**
-        * `header-case`: Enforces the case of the commit header (e.g., lowercase, uppercase).
-        * `header-full-stop`: Enforces or prohibits a full stop at the end of the commit header.
-        * `header-max-length`: Enforces a maximum length for the commit header.
-        * `header-min-length`: Enforces a minimum length for the commit header.
-        * `body-case`: Enforces the case of the commit body.
-        * `body-full-stop`: Enforces or prohibits a full stop at the end of the commit body.
-        * `body-leading-blank`: Enforces or prohibits a leading blank line for the commit body.
-        * `body-max-line-length`: Enforces a maximum line length for the commit body.
-        * `body-min-line-length`: Enforces a minimum line length for the commit body.
-        * `footer-case`: Enforces the case of the commit footer.
-        * `footer-full-stop`: Enforces or prohibits a full stop at the end of the commit footer.
-        * `footer-leading-blank`: Enforces or prohibits a leading blank line for the commit footer.
-        * `footer-max-line-length`: Enforces a maximum line length for the commit footer.
-        * `footer-min-line-length`: Enforces a minimum line length for the commit footer.
-        * `scope-case`: Enforces the case of the commit scope.
-        * `scope-empty`: Enforces or prohibits an empty commit scope.
-        * `scope-enum`: Enforces specific values for the commit scope.
-        * `scope-max-length`: Enforces a maximum length for the commit scope.
-        * `scope-min-length`: Enforces a minimum length for the commit scope.
-        * `subject-case`: Enforces the case of the commit subject.
-        * `subject-empty`: Enforces or prohibits an empty commit subject.
-        * `subject-full-stop`: Enforces or prohibits a full stop at the end of the commit subject.
-        * `subject-max-length`: Enforces a maximum length for the commit subject.
-        * `subject-min-length`: Enforces a minimum length for the commit subject.
-        * `type-case`: Enforces the case of the commit type.
-        * `type-empty`: Enforces or prohibits an empty commit type.
-        * `type-enum`: Enforces specific values for the commit type.
-    * Example: Enforce a specific format for commit message headers.
+```json
+"config": {
+  "commitizen": {
+    "path": "./node_modules/git-cz"
+  }
+}
+```
 
-### lint-staged
-
-* The `lint-staged` configuration in `.lintstagedrc.json` defines which linters to run on staged files.
-    * All staged files will be checked by `eslint --fix` to automatically fix linting errors.
-    * You can specify different linters for different file types.
-    * Example: Run ESLint on staged `.ts` files and Prettier on staged `.js` and `.json` files.
-
-### Changelog
-
-* The `release-it` configuration in `.release-it.ts` automates changelog generation.
-    * It uses `@release-it/conventional-changelog` and `conventionalcommits` preset to generate a changelog based on commit messages.
-    * The `template` folder contains templates for changelog generation, allowing for customization of the output format.
-    * You can customize the changelog format and content.
-* When using `release-it` the changelog is auto generated during releases.
-* For a better commit prompt experience, this package use `commitizen` and `git-cz` to trigger the interactive commit prompt.
-* The `changelog.config.cjs` file allows you to configure the commit prompt, including possible scopes.
-
-## Scripts
-
-* `npm run build`: Compiles TypeScript code to JavaScript.
-* `npm run test`: Runs unit tests with Jest.
-
-## Contribution
+## Contributing
 
 Contributions are welcome! Feel free to open issues and pull requests.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This package is distributed under the MIT license.
