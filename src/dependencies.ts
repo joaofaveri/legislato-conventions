@@ -1,0 +1,31 @@
+import { exec } from 'child_process'
+import { promisify } from 'util'
+
+const execAsync = promisify(exec)
+
+export async function installDependencies(): Promise<void> {
+  const dependencies = [
+    '@commitlint/cli@^19.7.1',
+    '@commitlint/config-conventional@^19.7.1',
+    '@release-it/conventional-changelog@^10.0.0',
+    'commitizen@^4.3.1',
+    'conventional-changelog-conventionalcommits@^8.0.0',
+    'dotenv-cli@^8.0.0',
+    'git-cz@^4.9.0',
+    'husky@^9.1.7',
+    'inquirer@^9.3.7',
+    'lint-staged@^15.4.3',
+    'release-it@^18.1.2',
+    'typescript@^5.7.3'
+  ]
+
+  const dependenciesString = dependencies.join(' ')
+
+  try {
+    await execAsync(`npm install --save-dev ${dependenciesString}`)
+    console.log('Dependencies installed successfully!')
+  } catch (error) {
+    console.error('Error installing dependencies:', error)
+    throw error
+  }
+}
