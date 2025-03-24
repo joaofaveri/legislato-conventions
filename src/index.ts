@@ -47,6 +47,7 @@ export async function main(): Promise<void> {
         'prepare': 'husky',
         'release':
           'npm run test && npm run build && dotenv release-it -- --verbose',
+        'release:no-test': 'npm run build && dotenv release-it -- --verbose',
         'release:no-npm':
           'npm run test && dotenv release-it -- --no-npm.publish',
         'release:changelog':
