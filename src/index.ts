@@ -56,8 +56,8 @@ export async function main(): Promise<void> {
     spinner.succeed(chalk.green('Configuration completed successfully!'))
 
     console.log(chalk.bold('\nNext steps:'))
-    console.log(chalk.yellow('1. Create a .env file in your project root.'))
-    console.log(chalk.yellow('2. Add the following line to the .env file:'))
+    console.log(chalk.white('1. Create a .env file in your project root.'))
+    console.log(chalk.white('2. Add the following line to the .env file:'))
     console.log(chalk.cyan('   GITHUB_TOKEN=your_github_personal_access_token'))
     console.log(
       chalk.gray(
@@ -65,12 +65,12 @@ export async function main(): Promise<void> {
       )
     )
     console.log(
-      chalk.yellow(
+      chalk.white(
         '3. This will allow release-it to automate releases on GitHub.'
       )
     )
     console.log(
-      chalk.yellow(
+      chalk.white(
         '4. If you want to run lint, test or build before running release, please update the release scripts in your package.json accordingly.'
       )
     )
