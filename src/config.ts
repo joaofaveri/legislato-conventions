@@ -39,12 +39,12 @@ export async function copyConfigFiles(): Promise<void> {
     'getAllContributors.template.cjs': 'getAllContributors.cjs'
   }
 
-  for (const file of filesToCopy) {
-    const sourcePath = path.join(templatesDir, file)
-    const targetFileName = renameMap[file] || file // Use renameMap or original file name
-    const destinationPath = path.join(destinationDir, targetFileName)
+  try {
+    for (const file of filesToCopy) {
+      const sourcePath = path.join(templatesDir, file)
+      const targetFileName = renameMap[file] || file
+      const destinationPath = path.join(destinationDir, targetFileName)
 
-    try {
       if (fs.existsSync(sourcePath)) {
         if (fs.existsSync(destinationPath)) {
           const answer = await inquirer.prompt([
@@ -74,11 +74,11 @@ export async function copyConfigFiles(): Promise<void> {
       } else {
         spinner.warn(chalk.yellow(`File ${file} not found in template.`))
       }
-    } catch (error) {
-      spinner.fail(chalk.red(`Error copying file ${targetFileName}:`))
-      console.error(error)
-      throw error
     }
+    spinner.succeed(chalk.green('Configuration files copied successfully!'))
+  } catch (error) {
+    spinner.fail(chalk.red('Error copying configuration files:'))
+    console.error(error)
+    throw error
   }
-  spinner.succeed(chalk.green('Configuration files copied successfully!'))
 }
