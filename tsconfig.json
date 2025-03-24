@@ -12,6 +12,6 @@
     "noEmit": true,
     "outDir": "dist"
   },
-  "include": ["src", "tests", "configs", ".", "./.release-it.ts"],
+  "include": ["src", "tests", "configs/.release-it.ts", ".", "./.release-it.ts"],
   "exclude": ["node_modules", "coverage", "dist"]
 }
