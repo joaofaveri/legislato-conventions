@@ -8,11 +8,69 @@ The main purpose of this package is to streamline the setup of essential tools f
 
 ## Installation
 
-To install the package, execute the following command:
+To use `legislato-conventions`, you have two options: using `npx` (recommended) or installing the package globally or locally.
 
-```bash
-npx legislato-conventions
-```
+### Using `npx` (Recommended)
+
+`npx` allows you to execute the package without installing it directly into your project's `node_modules`. This is the recommended approach for most users.
+
+1.  Open your terminal in the root directory of your project.
+2.  Run the following command:
+
+    ```bash
+    npx @legislato/legislato-conventions
+    ```
+
+    `npx` will download the package (if not already cached) and execute it.
+
+### Installing the Package (Optional)
+
+If you prefer to install the package, you can do so globally or locally.
+
+#### Global Installation
+
+Installing the package globally allows you to run it from any directory.
+
+1.  Open your terminal.
+2.  Run the following command:
+
+    ```bash
+    npm install -g @legislato/legislato-conventions
+    ```
+
+3.  After installation, you can run the package from any directory:
+
+    ```bash
+    legislato-conventions
+    ```
+
+#### Local Installation
+
+Installing the package locally adds it to your project's `node_modules` and `package.json`.
+
+1.  Open your terminal in the root directory of your project.
+2.  Run the following command:
+
+    ```bash
+    npm install --save-dev @legislato/legislato-conventions
+    ```
+
+3.  After installation, you can run the package using `npx` or by adding a script to your `package.json`:
+
+    ```json
+    "scripts": {
+      "legislato-conventions": "legislato-conventions"
+    }
+    ```
+
+    Then, you can run the package using:
+
+    ```bash
+    npm run legislato-conventions
+    ```
+
+> [!TIP]
+> **Note:** Using `npx` is generally recommended as it keeps your project's dependencies clean and ensures you are always using the latest version of the package.
 
 ## Usage
 
