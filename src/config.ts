@@ -46,13 +46,25 @@ export async function copyConfigFiles(): Promise<void> {
     try {
       if (fs.existsSync(sourcePath)) {
         if (fs.existsSync(destinationPath)) {
-          spinner.warn(
-            chalk.yellow(`File ${targetFileName} already exists. Skipping.`)
-          )
+          // Verifique se o diretório está vazio
+          const stats = fs.statSync(destinationPath)
+          if (
+            stats.isDirectory()
+            && fs.readdirSync(destinationPath).length === 0
+          ) {
+            copyRecursiveSync(sourcePath, destinationPath)
+            spinner.info(
+              chalk.gray(`File ${targetFileName} copied successfully!`)
+            )
+          } else {
+            spinner.warn(
+              chalk.yellow(`File ${targetFileName} already exists. Skipping.`)
+            )
+          }
         } else {
           copyRecursiveSync(sourcePath, destinationPath)
           spinner.info(
-            chalk.blue(`File ${targetFileName} copied successfully!`)
+            chalk.gray(`File ${targetFileName} copied successfully!`)
           )
         }
       } else {
