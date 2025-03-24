@@ -1,5 +1,6 @@
 import chalk from 'chalk'
 import * as fs from 'fs'
+import inquirer from 'inquirer'
 import ora from 'ora'
 import * as path from 'path'
 
@@ -46,20 +47,23 @@ export async function copyConfigFiles(): Promise<void> {
     try {
       if (fs.existsSync(sourcePath)) {
         if (fs.existsSync(destinationPath)) {
-          // Verifique se o diretório está vazio
-          const stats = fs.statSync(destinationPath)
-          if (
-            stats.isDirectory()
-            && fs.readdirSync(destinationPath).length === 0
-          ) {
+          const answer = await inquirer.prompt([
+            {
+              type: 'confirm',
+              name: 'overwrite',
+              message: chalk.yellow(
+                `File ${targetFileName} already exists. Overwrite?`
+              ),
+              default: false
+            }
+          ])
+          if (answer.overwrite) {
             copyRecursiveSync(sourcePath, destinationPath)
             spinner.info(
-              chalk.gray(`File ${targetFileName} copied successfully!`)
+              chalk.gray(`File ${targetFileName} overwritten successfully!`)
             )
           } else {
-            spinner.warn(
-              chalk.yellow(`File ${targetFileName} already exists. Skipping.`)
-            )
+            spinner.warn(chalk.yellow(`File ${targetFileName} skipped.`))
           }
         } else {
           copyRecursiveSync(sourcePath, destinationPath)
