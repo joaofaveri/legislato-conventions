@@ -44,6 +44,7 @@ export async function main(): Promise<void> {
         ...(packageJson.scripts ?? {}),
         'prepare': 'husky',
         'release': 'dotenv release-it -- --verbose',
+        'release:only-version': 'dotenv release-it -- --verbose --only-version',
         'release:no-npm': 'dotenv release-it -- --no-npm.publish',
         'release:changelog': 'dotenv release-it -- --changelog',
         'release:version': 'dotenv release-it -- --release-version'

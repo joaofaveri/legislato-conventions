@@ -98,6 +98,7 @@ The package will add the following scripts to your `package.json`:
 
 * `"prepare": "husky"`: Installs Husky to configure Git hooks.
 * `"release": "npm run build && dotenv release-it -- --verbose"`: Automates the release process with `release-it`.
+* `'release:only-version': 'dotenv release-it -- --verbose --only-version'`: Automates the release process with `release-it`. This use a prompt only to determine the version, and automate the rest
 * `"release:no-npm": "dotenv release-it -- --no-npm.publish"`: Automates the release process without publishing to NPM.
 * `"release:changelog": "dotenv release-it -- --changelog"`: Print the changelog without releasing anything.
 * `"release:version": "dotenv release-it -- --release-version"`: Print the next version without releasing anything.
