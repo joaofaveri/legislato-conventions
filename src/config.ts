@@ -64,6 +64,7 @@ export async function copyConfigFiles(): Promise<void> {
   const renameMap: Record<string, string> = {
     '.commitlintrc.template.json': '.commitlintrc.json',
     '.lintstagedrc.template.json': '.lintstagedrc.json',
+    '.lintstagedrc.template.cjs': '.lintstagedrc.cjs',
     '.release-it.template.ts': '.release-it.ts',
     'changelog.config.template.cjs': 'changelog.config.cjs',
     'getAllContributors.template.cjs': 'getAllContributors.cjs'
@@ -76,16 +77,22 @@ export async function copyConfigFiles(): Promise<void> {
       || fs.existsSync(path.join(destinationDir, 'next.config.ts'))
 
     for (const file of filesToCopy) {
-      let sourcePath = path.join(templatesDir, file)
-      let targetFileName = renameMap[file] || file
-      // Substitua .lintstagedrc.template.json por .lintstagedrc.template.cjs
-      if (isNextJsProject && file === '.lintstagedrc.template.json') {
-        sourcePath = path.join(templatesDir, '.lintstagedrc.template.cjs')
-        targetFileName = '.lintstagedrc.cjs'
-      }
+      const sourcePath = path.join(templatesDir, file)
+      const targetFileName = renameMap[file] || file
       const destinationPath = path.join(destinationDir, targetFileName)
 
       await copyRecursiveSync(sourcePath, destinationPath)
+    }
+    if (isNextJsProject) {
+      const templateJsonPath = path.join(destinationDir, '.lintstagedrc.json')
+      if (fs.existsSync(templateJsonPath)) {
+        fs.unlinkSync(templateJsonPath)
+      }
+    } else {
+      const templateCjsPath = path.join(destinationDir, '.lintstagedrc.cjs')
+      if (fs.existsSync(templateCjsPath)) {
+        fs.unlinkSync(templateCjsPath)
+      }
     }
     spinner.succeed(chalk.green('Configuration files copied successfully!'))
   } catch (error) {
